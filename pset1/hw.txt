@@ -1,0 +1,31 @@
+2 "Hello World"
+    2.1 
+    2.2
+3 More Programs
+    3.1 
+        1. When two variables are declared with the same name within a block
+        there will be a compilation error and it says
+        "redefinition of 'arg1' with a different type: 'char' vs 'int'"
+
+        2, 3 and 4. When we declare an identifier in a block, and then redeclare that 
+        same identifier in a block nested within that block, there will be no errors
+        and the code will use the identifier in the current scope.
+
+        5. The code does not compile because it calls std::cout before #include <iostream>
+        to fix this move the #include <iostream> to the first line
+    3.2
+    3.3
+    3.4
+        3.4.1
+        3.4.2
+        3.4.3
+    3.5 What does this program do?
+        3.5.1 multiplies dole and bob
+        3.5.2 returns an error because you cannot redefine a value
+        3.5.3 sum of (-1)^n * 1/k^2 where k starts at 1 and increments by 1 until k equals n
+4 Factorials gone wrong
+    4.1 1, 1, 2, 9362880, 3628800
+    4.2 when -1 is passed into the factorial program 1 is outputted
+        you can fix this by check if the number passed in is positive or negative
+    4.3 it fails at 17 because 17! is too big to store in an int
+    4.4 No because the other inputs are either negative or too large
