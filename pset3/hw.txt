@@ -1,0 +1,26 @@
+2 Catch that bug
+    2.1 doubleVal() changes the values of Point but on line 20
+    Point is defined as a const, this will return an error
+    2.2 Error on line 11 because the method has const but it changes x
+    2.3 Error on line 16 because you can't access a private member outside of the class
+        you'd have to use the getters
+    2.4 Error on line 13 because when you define setX you need to specify it is 
+        Point::setX()
+    2.5 Need to use delete[] instead of delete
+    2.6 Need to delete p
+3 Point
+    geometry.h
+4 PointArray
+    geometry.h
+    geometry.cpp
+    4.5.1 You need both const and not-const versions because you might want both of them
+5 Polygon
+    geometry.h
+    geometry.cpp
+    5.2 If you use the default copy method it will create a shallow copy of PointArray
+    5.6
+        1. If the constructurs are private then you can't create any instances
+        2. Total numbers of polygons is decremented and the PointArray will also be delted
+        3. So that classes that inherit from it can access the fields but not something else
+        4. The parent getNumSides() will be called because the method isnt virtual
+    5.7
