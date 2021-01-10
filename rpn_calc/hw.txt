@@ -1,0 +1,4 @@
+part 2
+    I fixed my repr() functions so they returned a string instead of printing
+    Also I wasn't very sure how to add the functions so I just hardcoded it into main()
+    
