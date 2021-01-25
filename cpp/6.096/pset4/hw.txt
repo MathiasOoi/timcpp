@@ -1,0 +1,14 @@
+2 Multi-type Min
+    2.1
+    2.2
+3 Casting
+    3.1 static_cast<Triangle*>(rect)
+    3.2 dynamic_cast<Triangle*>(rect)
+4 Templated Stack
+    4.1
+    4.2
+5 Graph Representation
+    On line 25 the problem tells me to use "int Graph::numOutgoing(const int nodeID) const"
+    but I got an error saying 
+    "passing 'const std::map<int, std::vector<int> >' as 'this' argument discards qualifiers"
+    I'm not sure why that is because I didn't modify the argument at all and removeing the const fixes this
