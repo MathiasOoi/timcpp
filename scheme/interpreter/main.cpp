@@ -1,14 +1,16 @@
 #include <iostream>
 #include <string>
-#include <sstream>
+#include <vector>
 
-#include "SVal.hpp"
+#include "sval.hpp"
+#include "parser.hpp"
 
 using namespace std;
 
 int main(){
-    SVal v(SVal(SVal(SVal("foo"), SVal(3)), SVal(2)), SVal(4));
-    cout << v.which << endl;
-    cout << v.is_nil() << v.is_number() << v.is_symbol() << v.is_cons() << endl;
-    cout << v.to_string() << endl;
+    vector<string> tests = {"13", "x", "()", "(())", "(+ 3 4)", "(a (b c) d)"};
+    for (string test : tests){
+        auto x = tokenize(test);
+        cout << test << " -> " << to_string(parse(x)) << endl;
+    }
 }

@@ -1,30 +1,39 @@
 #pragma once
+
+#include <utility>
 #include <string>
-#include <vector>
 
-struct SVal {
-    int number;
-    std::string symbol;
-    SVal *left, *right;
-    int which; // 0 for nil, 1 for number, 2 for symbol, 3 for cons
+struct SVal{
+    SVal();
+    SVal(int n);
+    SVal(const std::string &s);
+    SVal(SVal a, SVal b);
 
-    SVal() {which = 0;}
-    SVal(int n) {number = n; which = 1;}
-    SVal(std::string s) {symbol = s; which = 2;}
-    SVal(SVal a, SVal b) {left = &a; right = &b; which = 3;}
+    // Create an SVal that stores an error code, nothing else.
+    static SVal error();
 
-    bool is_nil() {return which == 0 ? true : false;}
-    bool is_number() {return which == 1 ? true : false;}
-    bool is_symbol() {return which == 2 ? true : false;}
-    bool is_cons() {return which == 3 ? true : false;}
-
-    SVal car() {return *left;}
-    SVal cdr() {return *right;}
-    int get_number() {return number;}
-    std::string get_symbol() {return symbol;}
-
-    std::string to_string() {return "Value: " + this->repr();}
-
-    private:
-        std::string repr();
+    int which = 0;
+    int number = 0;
+    std::string symbol = "";
+    using Cons = std::pair<SVal, SVal>;
+    Cons *cons = nullptr;
 };
+
+SVal car(SVal s);
+SVal cdr(SVal s);
+int get_number(SVal s);
+std::string get_symbol(SVal s);
+
+bool is_nil(SVal s);
+bool is_cons(SVal s);
+bool is_number(SVal s);
+bool is_symbol(SVal s);
+bool is_error(SVal s);
+bool is_list(SVal s);
+
+SVal symbol(const std::string &s);
+SVal number(int num);
+SVal nil();
+SVal cons(SVal a, SVal b);
+
+std::string to_string(SVal s);
