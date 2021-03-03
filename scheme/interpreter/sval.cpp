@@ -2,6 +2,7 @@
 #include <sstream>
 #include <iostream>
 #include <vector>
+#include <assert.h>
 
 
 #include "sval.hpp"
@@ -9,35 +10,42 @@
 using namespace std;
 
 // SVal initialziers
-SVal::SVal(){}
+SVal::SVal(){
+    value = Nil();
+}
 SVal::SVal(int n){
-    number = n;
-    which = 1;
+    value = n;
 }
 SVal::SVal(const string &s){
-    symbol = s;
-    which = 2;
+    value = s;
 }
 SVal::SVal(SVal a, SVal b){
-    pair<SVal, SVal>* ptr = new pair<SVal, SVal>;
-    ptr->first = a; ptr->second = b;
-    cons = ptr;
-    which = 3;
+    value = new std::pair<SVal, SVal>(a, b);
+}
+
+SVal SVal::error(){
+    SVal s;
+    s.value = Err();
+    return s;
 }
 
 // SVal Getters
-SVal car(SVal s) {return s.cons->first;}
-SVal cdr(SVal s) {return s.cons->second;}
-int get_number(SVal s) {return s.number;}
-std::string get_symbol(SVal s) {return s.symbol;}
+SVal car(SVal s) {return std::get<std::pair<SVal, SVal>*>(s.value)->first;}
+SVal cdr(SVal s) {return std::get<std::pair<SVal, SVal>*>(s.value)->second;}
+int get_number(SVal s) {return std::get<int>(s.value);}
+std::string get_symbol(SVal s) {return std::get<string>(s.value);}
 
 // SVal type checker
-bool is_nil(SVal s) {return s.which == 0 ? true : false;}
-bool is_number(SVal s) {return s.which == 1 ? true : false;}
-bool is_symbol(SVal s) {return s.which == 2 ? true : false;}
-bool is_cons(SVal s) {return s.which == 3 ? true : false;}
-bool is_error(SVal s);
-bool is_list(SVal s);
+bool is_nil(SVal s) {return std::holds_alternative<Nil>(s.value);}
+bool is_number(SVal s) {return std::holds_alternative<int>(s.value);}
+bool is_symbol(SVal s) {return std::holds_alternative<string>(s.value);}
+bool is_cons(SVal s) {return std::holds_alternative<pair<SVal, SVal>*>(s.value);}
+bool is_error(SVal s) {return std::holds_alternative<Err>(s.value);}
+bool is_list(SVal s) {
+    if (is_number(s) || is_symbol(s)) return false;
+    if (is_nil(s)) return true;
+    return is_list(cdr(s));
+}
 
 // Create SVal
 SVal symbol(const string &s) {return SVal(s);}
@@ -49,10 +57,21 @@ SVal cons(SVal a, SVal b) {return SVal(a, b);}
 string to_string(SVal s){
     ostringstream oss;
     
-    if (is_nil(s)) oss << "()";
+    if (is_list(s)) {
+        oss << "(";
+        string sep = "";
+        while (is_cons(s)) {
+            oss << sep + to_string(car(s));
+            s = cdr(s);
+            sep = " ";
+        }
+        oss << ")";
+    }
+    else if (is_nil(s)) oss << "()";
     else if (is_number(s)) oss << get_number(s);
     else if (is_symbol(s)) oss << get_symbol(s);
     else if (is_cons(s)) oss << "(" << to_string(car(s)) << "." << to_string(cdr(s)) << ")";
+    else if(is_error(s)) oss << "error";
 
     return oss.str();
 }

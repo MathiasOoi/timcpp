@@ -51,5 +51,3 @@ SVal parse(deque<string> &tokens){
     else return string_is_number(token) ? SVal(stoi(token)) : SVal(token);
 
 }
-
-string eval(string input){}

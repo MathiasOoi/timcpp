@@ -2,6 +2,10 @@
 
 #include <utility>
 #include <string>
+#include <variant>
+
+struct Nil{};
+struct Err{};
 
 struct SVal{
     SVal();
@@ -11,12 +15,8 @@ struct SVal{
 
     // Create an SVal that stores an error code, nothing else.
     static SVal error();
-
-    int which = 0;
-    int number = 0;
-    std::string symbol = "";
-    using Cons = std::pair<SVal, SVal>;
-    Cons *cons = nullptr;
+    
+    std::variant<int, std::string, std::pair<SVal, SVal>*, Nil, Err> value;
 };
 
 SVal car(SVal s);
