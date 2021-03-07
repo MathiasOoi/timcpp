@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <assert.h>
+#include <iostream>
 
 
 #include "sval.hpp"
@@ -42,7 +43,7 @@ bool is_symbol(SVal s) {return std::holds_alternative<string>(s.value);}
 bool is_cons(SVal s) {return std::holds_alternative<pair<SVal, SVal>*>(s.value);}
 bool is_error(SVal s) {return std::holds_alternative<Err>(s.value);}
 bool is_list(SVal s) {
-    if (is_number(s) || is_symbol(s)) return false;
+    if (is_number(s) || is_symbol(s) || is_error(s)) return false;
     if (is_nil(s)) return true;
     return is_list(cdr(s));
 }
@@ -56,7 +57,6 @@ SVal cons(SVal a, SVal b) {return SVal(a, b);}
 // SVal -> String
 string to_string(SVal s){
     ostringstream oss;
-    
     if (is_list(s)) {
         oss << "(";
         string sep = "";
@@ -72,6 +72,5 @@ string to_string(SVal s){
     else if (is_symbol(s)) oss << get_symbol(s);
     else if (is_cons(s)) oss << "(" << to_string(car(s)) << "." << to_string(cdr(s)) << ")";
     else if(is_error(s)) oss << "error";
-
     return oss.str();
 }
