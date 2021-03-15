@@ -25,5 +25,10 @@ int main(){
     env1.add("z", parse(x));
     cout << to_string(env1.get("z")) << endl;
     cout << to_string(env2.get("z")) << endl;
+    env2.add("z", SVal(13));
+    cout << to_string(env2.get("z")) << endl;
+
+    Environment env3;
+    cout << to_string(env3.get("z")) << endl;
 }
     

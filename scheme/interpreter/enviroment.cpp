@@ -7,8 +7,8 @@
 
 using namespace std;
 
-Environment::Environment(Environment* parent){
-    if (parent) env = parent->env;
+Environment::Environment(Environment* p){
+    parent = p;
 }
 
 void Environment::add(const std::string &symbol, SVal value){
@@ -16,5 +16,5 @@ void Environment::add(const std::string &symbol, SVal value){
 }
 
 SVal Environment::get(const std::string &symbol){
-    return env.find(symbol) != env.end() ? env[symbol] : SVal::error();
+    return env.find(symbol) != env.end() ? env[symbol] : parent ? parent->get(symbol) : SVal::error();
 }
