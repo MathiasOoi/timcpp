@@ -28,7 +28,6 @@ struct SVal{
     static SVal error();
 
     std::variant<int, std::string, std::pair<SVal, SVal>*, Nil, Err, Environment*, std::function<SVal(SVal)>, Closure> value;
-    // std::variant<int, std::string, std::pair<SVal, SVal>*, Nil, Err> value;
 };
 
 SVal car(SVal s);
@@ -56,8 +55,3 @@ SVal add(SVal s);
 SVal subtract(SVal s);
 SVal multiply(SVal s);
 SVal divide(SVal s);
-
-// std::function<SVal(SVal)> add = add_f;
-// std::function<SVal(SVal)> subtract = subtract_f;
-// std::function<SVal(SVal)> multiply = multiply_f;
-// std::function<SVal(SVal)> divide = divide_f;
