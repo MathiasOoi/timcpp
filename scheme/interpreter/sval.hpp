@@ -3,26 +3,39 @@
 #include <utility>
 #include <string>
 #include <variant>
+#include <functional>
+#include <vector>
+
+class Environment;
+struct SVal;
 
 struct Nil{};
 struct Err{};
+struct Closure{
+    Environment* env;
+    std::vector<std::string> symbols;
+    SVal *s;
+};
 
 struct SVal{
     SVal();
     SVal(int n);
     SVal(const std::string &s);
     SVal(SVal a, SVal b);
+    SVal(std::function<SVal(SVal)> func);
 
     // Create an SVal that stores an error code, nothing else.
     static SVal error();
-    
-    std::variant<int, std::string, std::pair<SVal, SVal>*, Nil, Err> value;
+
+    std::variant<int, std::string, std::pair<SVal, SVal>*, Nil, Err, Environment*, std::function<SVal(SVal)>, Closure> value;
+    // std::variant<int, std::string, std::pair<SVal, SVal>*, Nil, Err> value;
 };
 
 SVal car(SVal s);
 SVal cdr(SVal s);
 int get_number(SVal s);
 std::string get_symbol(SVal s);
+std::function<SVal(SVal)> get_func(SVal s);
 
 bool is_nil(SVal s);
 bool is_cons(SVal s);
@@ -37,3 +50,14 @@ SVal nil();
 SVal cons(SVal a, SVal b);
 
 std::string to_string(SVal s);
+SVal eval(Environment *env, SVal expr);
+
+SVal add(SVal s);
+SVal subtract(SVal s);
+SVal multiply(SVal s);
+SVal divide(SVal s);
+
+// std::function<SVal(SVal)> add = add_f;
+// std::function<SVal(SVal)> subtract = subtract_f;
+// std::function<SVal(SVal)> multiply = multiply_f;
+// std::function<SVal(SVal)> divide = divide_f;
